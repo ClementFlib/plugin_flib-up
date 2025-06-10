@@ -8,7 +8,7 @@ Author: Clément GUEZOU - Développeur web chez Les Flibustiers
 
 if (!defined('ABSPATH')) exit;
 
-define('FLIBUP_VERSION', '1.0.0');
+define('FLIBUP_VERSION', '0.0.1');
 define('FLIBUP_DIR', plugin_dir_path(__FILE__));
 define('FLIBUP_URL', plugin_dir_url(__FILE__));
 
@@ -80,8 +80,12 @@ function flibup_popup_shortcode($atts) {
 }
 
 require FLIBUP_DIR . 'inc/plugin-update-checker/plugin-update-checker.php';
-$myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
+// Namespace de la librairie de PUC -> plugin pour maj auto
+use YahnisElsts\PluginUpdateChecker\v5p4\PucFactory;
+$myUpdateChecker = PucFactory::buildUpdateChecker(
     'https://github.com/ClementFlib/plugin_flib-up',
     __FILE__,
     'flib-up'
 );
+// Définis la branche, ici `master` par défaut.
+$updateChecker->setBranch('master');
