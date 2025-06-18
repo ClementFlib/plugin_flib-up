@@ -8,12 +8,16 @@ Author: Clément GUEZOU - Développeur web à l'agence Les Flibustiers
 
 if (!defined('ABSPATH')) exit;
 
-// --- Auto-update (Plugin Update Checker) ---
-require_once plugin_dir_path(__FILE__) . 'plugin-update-checker/plugin-update-checker.php';
-$flibupUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
-    'https://github.com/ClementFlib/plugin_flib-up/',  // Remplace avec ton dépôt GitHub
-    __FILE__,
-    'flib-up'
+// Permet de vérifier la version pour MAJ auto du plugin
+require plugin_dir_path(__FILE__) . 'plugin-update-checker/plugin-update-checker.php';
+
+// Namespace de la librairie de PUC -> plugin pour maj auto
+use YahnisElsts\PluginUpdateChecker\v5p6\PucFactory;
+
+$updateChecker = PucFactory::buildUpdateChecker(
+    'https://github.com/ClementFlib/plugin_flib-up/', // URL du dépôt GitHub
+    __FILE__, // Chemin vers le fichier principal du plugin
+    'flib-up' // Slug du plugin
 );
 
 // --- Fichiers du plugin ---
