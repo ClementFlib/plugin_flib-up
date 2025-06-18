@@ -28,19 +28,23 @@ class FlibUp_CPT {
     }
 
     public static function render_meta_box($post) {
-        // Simple exemple, à étoffer avec tes options de styles/animations
+        $centered = get_post_meta($post->ID, '_flibup_centered', true);
         ?>
         <p>
-            <label for="flibup_centered">
-                <input type="checkbox" name="flibup_centered" id="flibup_centered" value="1" <?php checked(get_post_meta($post->ID, '_flibup_centered', true), 1); ?> />
-                Centrer le contenu ?
+            <label>
+                <input type="checkbox" name="flibup_centered" id="flibup_centered" value="1" <?php checked($centered, 1); ?>>
+                Centrer le contenu de la popup
             </label>
         </p>
+        <h4>Aperçu (statique)</h4>
+        <div class="flibup-preview<?php if ($centered) echo ' flibup-centered'; ?>">
+            <?php echo wpautop( esc_html( $post->post_content ) ); ?>
+        </div>
         <?php
     }
 
     public static function save_popup_meta($post_id) {
-        if (isset($_POST['flibup_centered'])) {
+        if (array_key_exists('flibup_centered', $_POST)) {
             update_post_meta($post_id, '_flibup_centered', 1);
         } else {
             update_post_meta($post_id, '_flibup_centered', 0);

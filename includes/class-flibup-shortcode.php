@@ -19,7 +19,7 @@ class FlibUp_Shortcode {
 
         ob_start();
         ?>
-        <div class="flibup-popup <?php if ($centered) echo 'flibup-centered'; ?>">
+        <div class="flibup-popup<?php if ($centered) echo ' flibup-centered'; ?>">
             <div class="flibup-popup-content">
                 <?php echo apply_filters('the_content', $popup->post_content); ?>
             </div>
