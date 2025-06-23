@@ -7,14 +7,14 @@ class FlibUp_CPT {
     }
 
     public static function register_post_type() {
-        register_post_type('flib_popup', [
-            'label' => 'Popups',
-            'public' => false,
-            'show_ui' => true,
-            'supports' => ['title', 'editor'],
-            'menu_icon' => 'dashicons-external',
-        ]);
-    }
+    register_post_type('flib_popup', [
+        'label' => 'Flib\'Up',
+        'public' => false,
+        'show_ui' => true,
+        'supports' => ['title'],
+        'menu_icon' => 'dashicons-external',
+    ]);
+}
 
     public static function add_meta_boxes() {
         add_meta_box(
