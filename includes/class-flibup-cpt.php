@@ -36,12 +36,13 @@ class FlibUp_CPT {
                 Centrer le contenu de la popup
             </label>
         </p>
-        <h4>Aperçu (statique)</h4>
-        <div class="flibup-preview<?php if ($centered) echo ' flibup-centered'; ?>">
-            <?php echo wpautop( esc_html( $post->post_content ) ); ?>
+        <h4>Aperçu (live)</h4>
+        <div id="flibup_preview" class="flibup-preview<?php if ($centered) echo ' flibup-centered'; ?>">
+            <?php echo apply_filters('the_content', $post->post_content); ?>
         </div>
         <?php
     }
+
 
     public static function save_popup_meta($post_id) {
         if (array_key_exists('flibup_centered', $_POST)) {

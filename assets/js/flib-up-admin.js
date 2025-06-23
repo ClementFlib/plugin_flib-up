@@ -1,15 +1,22 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const checkbox = document.getElementById('flibup_centered');
-    const preview = document.querySelector('.flibup-preview');
-    if (!checkbox || !preview) return;
+    const centeredCheckbox = document.getElementById('flibup_centered');
+    const preview = document.getElementById('flibup_preview');
+    const contentEditor = document.getElementById('content'); // l’ID du textarea WP de l’éditeur classique
 
-    checkbox.addEventListener('change', function() {
-        if (checkbox.checked) {
-            preview.classList.add('flibup-centered');
-        } else {
-            preview.classList.remove('flibup-centered');
-        }
-    });
+    // Centrage live
+    if (centeredCheckbox && preview) {
+        centeredCheckbox.addEventListener('change', function() {
+            preview.classList.toggle('flibup-centered', this.checked);
+        });
+    }
 
-    // Si tu veux gérer d'autres champs/preview dynamiques, ajoute ici
+    // Modification live du contenu (éditeur classique)
+    if (contentEditor && preview) {
+        contentEditor.addEventListener('input', function() {
+            // Rendu HTML simple (pas de shortcodes WP ni de <p>)
+            preview.innerHTML = this.value.replace(/\n/g, "<br>");
+        });
+    }
+
+    // À compléter plus tard pour Gutenberg (éditeur visuel)
 });
