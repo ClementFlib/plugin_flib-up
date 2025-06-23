@@ -9,7 +9,7 @@ add_action('admin_enqueue_scripts', function($hook) {
         in_array($hook, ['post.php', 'post-new.php'])
     ) {
         wp_enqueue_style('flibup-admin', plugin_dir_url(__FILE__).'../assets/css/flib-up-admin.css');
-        wp_enqueue_script('flibup-admin', plugin_dir_url(__FILE__).'../assets/js/flib-up-admin.js', [], false, true);
+        // wp_enqueue_script('flibup-admin', plugin_dir_url(__FILE__).'../assets/js/flib-up-admin.js', [], false, true);
     }
 });
 

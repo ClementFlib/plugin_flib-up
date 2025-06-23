@@ -30,14 +30,6 @@ if (isset($_GET['updated']) && $_GET['updated'] == 1) {
         <input type="hidden" name="action" value="flibup_save">
         <input type="hidden" name="post_id" value="<?php echo intval($post_id); ?>">
         <div style="display:flex; gap:40px; align-items: flex-start;">
-            <!-- Colonne preview -->
-            <div style="flex:1;">
-                <h2>Aperçu popup</h2>
-                <div id="flibup_preview" class="flibup-preview<?php if ($centered) echo ' flibup-centered'; ?>">
-                    <strong><?php echo esc_html($title); ?></strong><br>
-                    <span><?php echo nl2br(esc_html($content)); ?></span>
-                </div>
-            </div>
             <!-- Colonne options -->
             <div style="flex:1;max-width:420px;">
                 <h2>Paramètres</h2>
@@ -49,50 +41,28 @@ if (isset($_GET['updated']) && $_GET['updated'] == 1) {
                     <label for="flibup_content">Contenu</label><br>
                     <textarea id="flibup_content" name="flibup_content" rows="6" style="width:100%;"><?php echo esc_textarea($content); ?></textarea>
                 </p>
-                <p>
-                    <label>
-                        <input type="checkbox" id="flibup_centered" name="flibup_centered" value="1" <?php checked($centered, 1); ?> />
-                        Centrer le contenu
-                    </label>
-                </p>
+                <div id="flibup_elements_list"></div>
+                <button type="button" id="flibup_add_element" class="button">+ Ajouter un élément</button>
+                <input type="hidden" name="flibup_elements" id="flibup_elements" value="">
                 <button type="submit" class="button button-primary">Enregistrer</button>
+            </div>
+            <!-- Colonne preview -->
+            <div style="flex:1;">
+                <h2 style="text-align: center;">Aperçu de la popup</h2>
+                <div id="flibup_preview_frame" class="flibup-preview-frame">
+                    <div class="flibup-overlay"></div>
+                    <div class="flibup-popup" id="flibup-popup">
+                        <button class="flibup-close" type="button" title="Fermer la popup">&times;</button>
+                        <h2 id="flibup_preview_title"><?php echo esc_html($title); ?></h2><br>
+                        <p id="flibup_preview_content"><?php echo nl2br(esc_html($content)); ?></p>
+                    </div>
+                </div>
             </div>
         </div>
     </form>
 </div>
 
-<style>
-.flibup-builder { max-width: 1200px; }
-.flibup-preview {
-    border: 1px solid #ddd;
-    min-height: 120px;
-    background: #fff;
-    padding: 24px;
-    margin-bottom: 20px;
-    font-size: 18px;
-    transition: text-align 0.2s;
-}
-.flibup-centered { text-align: center; }
-</style>
-
-<script>
-document.addEventListener('DOMContentLoaded', function(){
-    const titleInput = document.getElementById('flibup_title');
-    const contentInput = document.getElementById('flibup_content');
-    const centeredInput = document.getElementById('flibup_centered');
-    const preview = document.getElementById('flibup_preview');
-
-    function updatePreview() {
-        let html = "<strong>" + (titleInput.value || '') + "</strong><br><span>" + (contentInput.value || '').replace(/\n/g, '<br>') + "</span>";
-        preview.innerHTML = html;
-        preview.classList.toggle('flibup-centered', centeredInput.checked);
-    }
-    [titleInput, contentInput, centeredInput].forEach(el => {
-        if (el) el.addEventListener('input', updatePreview);
-        if (el && el.type === "checkbox") el.addEventListener('change', updatePreview);
-    });
-});
-</script>
+<script type="module" src="<?php echo plugins_url('assets/js/flib-up-admin.js', dirname(__FILE__)); ?>"></script>
 
 <?php
 // Footer WP admin
