@@ -1,4 +1,11 @@
 <?php
+
+// Sécurité WordPress
+if (!defined('ABSPATH')) exit;
+
+// Header admin WP (ajoute menu, barre admin, etc)
+require_once ABSPATH . 'wp-admin/admin-header.php';
+
 // Récupération des infos du post
 $post_id = isset($_GET['post']) ? intval($_GET['post']) : 0;
 $post = get_post($post_id);
@@ -83,3 +90,10 @@ document.addEventListener('DOMContentLoaded', function(){
     });
 });
 </script>
+
+<?php
+// --------- /Builder custom ---------
+
+// Footer admin WP (ferme les balises ouvertes, scripts, etc)
+require_once ABSPATH . 'wp-admin/admin-footer.php';
+?>

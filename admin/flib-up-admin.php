@@ -24,7 +24,7 @@ function flibup_replace_editor() {
         add_filter('replace_editor', function($editor, $post) {
             if ($post->post_type === 'flib_popup') {
                 // Charge notre page builder custom
-                require_once plugin_dir_path(__FILE__).'flib-up-builder-page.php';
+                require plugin_dir_path(__FILE__).'flib-up-builder-page.php';
                 exit; // On arrête tout ici, seule notre page s’affiche
             }
             return $editor;
