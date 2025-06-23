@@ -1,29 +1,35 @@
 <?php
-
 // Sécurité WordPress
 if (!defined('ABSPATH')) exit;
 
-// Header admin WP (ajoute menu, barre admin, etc)
+// Header WP admin : inclut le menu gauche et la barre du haut
 require_once ABSPATH . 'wp-admin/admin-header.php';
 
-// Récupération des infos du post
+// On récupère le post
 $post_id = isset($_GET['post']) ? intval($_GET['post']) : 0;
-$post = get_post($post_id);
+$post = $post_id ? get_post($post_id) : null;
 
-// Données déjà en base (pour préremplir le builder)
-$flibup_data = get_post_meta($post_id, '_flibup_data', true);
+// Gestion des anciennes métas (ou nouvelle)
+$flibup_data = $post ? get_post_meta($post_id, '_flibup_data', true) : [];
 if (!is_array($flibup_data)) $flibup_data = [];
 
-$title = $post->post_title;
+$title = $post ? $post->post_title : '';
 $content = $flibup_data['content'] ?? '';
 $centered = $flibup_data['centered'] ?? false;
+
+// Affichage messages WP (en cas de redirection après save)
+if (isset($_GET['updated']) && $_GET['updated'] == 1) {
+    echo '<div id="message" class="updated notice notice-success is-dismissible"><p>Popup enregistrée avec succès !</p></div>';
+}
 ?>
 
 <div class="wrap flibup-builder">
     <h1>Flib-Up Popup Builder</h1>
-    <form id="flibup-builder-form" method="post" action="<?php echo admin_url('admin-post.php'); ?>">
+    <form id="flibup-builder-form" method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
         <?php wp_nonce_field('flibup_save', 'flibup_nonce'); ?>
-        <div style="display:flex; gap:40px;">
+        <input type="hidden" name="action" value="flibup_save">
+        <input type="hidden" name="post_id" value="<?php echo intval($post_id); ?>">
+        <div style="display:flex; gap:40px; align-items: flex-start;">
             <!-- Colonne preview -->
             <div style="flex:1;">
                 <h2>Aperçu popup</h2>
@@ -52,8 +58,6 @@ $centered = $flibup_data['centered'] ?? false;
                 <button type="submit" class="button button-primary">Enregistrer</button>
             </div>
         </div>
-        <input type="hidden" name="post_id" value="<?php echo intval($post_id); ?>">
-        <input type="hidden" name="action" value="flibup_save">
     </form>
 </div>
 
@@ -72,7 +76,6 @@ $centered = $flibup_data['centered'] ?? false;
 </style>
 
 <script>
-// JS natif : preview live
 document.addEventListener('DOMContentLoaded', function(){
     const titleInput = document.getElementById('flibup_title');
     const contentInput = document.getElementById('flibup_content');
@@ -92,8 +95,6 @@ document.addEventListener('DOMContentLoaded', function(){
 </script>
 
 <?php
-// --------- /Builder custom ---------
-
-// Footer admin WP (ferme les balises ouvertes, scripts, etc)
+// Footer WP admin
 require_once ABSPATH . 'wp-admin/admin-footer.php';
 ?>
